@@ -35,14 +35,30 @@ context.stroke();
 
 // Reference Arc: https://www.w3schools.com/tags/canvas_arc.asp
 
-context.beginPath();
-context.arc(400, 200, 50, 0, Math.PI * 2, true);
 
-//Try randomizing the rgba values
-let r = Math.random() * 255;
-let g = Math.random() * 255;
-let b = Math.random() * 255;
-let a = Math.random();
+//Animation Loop
+function animate(){
+    //Try randomizing the rgba values
+    let r = Math.random() * 255;
+    let g = Math.random() * 255;
+    let b = Math.random() * 255;
+    let a = Math.random();
+    
+    //Randomizing Location    
+    let x = 0;
+    let y = 0;
+    x = Math.random() * window.innerWidth;
+    y = Math.random() * window.innerHeight;
 
-context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-context.stroke();
+    //Making circles
+    context.beginPath();
+    context.arc(x, y, 50, 0, Math.PI * 2, true);
+    context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+    context.stroke();
+    
+    //With this function you make the loop
+    requestAnimationFrame(animate);
+}
+
+//Call function
+animate();
