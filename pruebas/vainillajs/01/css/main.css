@@ -1,0 +1,3 @@
+canvas{
+    display: block; /* You put display: block; because otherwise it'll generate a scroll */
+}
