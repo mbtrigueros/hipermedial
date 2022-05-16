@@ -35,11 +35,12 @@ context.stroke();
 
 // Reference Arc: https://www.w3schools.com/tags/canvas_arc.asp
 
-//X & Y variables. dx = X Velocity
+//X & Y variables. dx = X Velocity dY = Y Velocity
 let x = 100;
 let dx = 10;
 let radius = 50;
-//let y = 100;
+let y = 100;
+let dy = 10;
 
 //Try randomizing the rgba values
 let r = Math.random() * 255;
@@ -55,7 +56,7 @@ function animate(){
 
     //Making circles
     context.beginPath();
-    context.arc(x, 100, radius, 0, Math.PI * 2, true);
+    context.arc(x, y, radius, 0, Math.PI * 2, true);
     context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     context.stroke();
 
@@ -63,7 +64,12 @@ function animate(){
     if ( (x + radius >= innerWidth) || (x - radius <= 0)){
         dx = -dx;
     } 
+    //Y + X Velocity (direction)
+    if ( (y + radius >= innerHeight) || (y - radius <= 0)){
+        dy = -dy;
+    } 
 
+    y += dy;
     x += dx;
 }
 
