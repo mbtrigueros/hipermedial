@@ -36,11 +36,6 @@ context.stroke();
 // Reference Arc: https://www.w3schools.com/tags/canvas_arc.asp
 
 //X & Y variables. dx = X Velocity dY = Y Velocity
-let x = Math.random() * innerWidth;
-let dx = 10;
-let radius = 50;
-let y = Math.random() * innerHeight;
-let dy = 10;
 
 //Try randomizing the rgba values
 let r = Math.random() * 255;
@@ -50,42 +45,50 @@ let a = Math.random();
 
 //Circle Class
 class Circle {
-    constructor(x, y, r){
+    constructor(x, y, r, dx, dy){
         this.x = x;
         this.y = y;
         this.r = r;
+        this.dx = dx;
+        this.dy = dy;
     }
 
     draw(){
     //Making circles
     context.beginPath();
-    context.arc(x, y, r, 0, Math.PI * 2, true);
+    context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
     context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     context.stroke();
     }
+
+    move(){
+
+    //this.draw();
+    //X + X Velocity (direction)
+    if ( (this.x + this.r > innerWidth) || (this.x - this.r < 0)){
+        this.dx = -this.dx;
+    } 
+    //Y + Y Velocity (direction)
+    if ( (this.y + this.r > innerHeight) || (this.y - this.r < 0)){
+        this.dy = -this.dy;
+    } 
+    this.x += this.dx;
+    this.y += this.dy;
+    }
+
 }
 
+let circle = new Circle(100, 20, 20, 10, 10);
 
 //Animation Loop
 function animate(){
     //With this function you make the loop
     requestAnimationFrame(animate);
-    //context.clearRect(0, 0, innerWidth, innerHeight);
+    context.clearRect(0, 0, innerWidth, innerHeight);
 
     //Making circles
-    let circle = new Circle(100, 200, Math.random() * 100);
     circle.draw();
-    //X + X Velocity (direction)
-    if ( (x + radius >= innerWidth) || (x - radius <= 0)){
-        dx = -dx;
-    } 
-    //Y + X Velocity (direction)
-    if ( (y + radius >= innerHeight) || (y - radius <= 0)){
-        dy = -dy;
-    } 
-
-    y += dy;
-    x += dx;
+    circle.move();
 }
 
 //Call function
