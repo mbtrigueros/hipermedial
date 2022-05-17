@@ -36,10 +36,10 @@ context.stroke();
 // Reference Arc: https://www.w3schools.com/tags/canvas_arc.asp
 
 //X & Y variables. dx = X Velocity dY = Y Velocity
-let x = 100;
+let x = Math.random() * innerWidth;
 let dx = 10;
 let radius = 50;
-let y = 100;
+let y = Math.random() * innerHeight;
 let dy = 10;
 
 //Try randomizing the rgba values
@@ -48,18 +48,33 @@ let g = Math.random() * 255;
 let b = Math.random() * 255;
 let a = Math.random();
 
+//Circle Class
+class Circle {
+    constructor(x, y, r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    }
+
+    draw(){
+    //Making circles
+    context.beginPath();
+    context.arc(x, y, r, 0, Math.PI * 2, true);
+    context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+    context.stroke();
+    }
+}
+
+
 //Animation Loop
 function animate(){
     //With this function you make the loop
     requestAnimationFrame(animate);
-    context.clearRect(0, 0, innerWidth, innerHeight);
+    //context.clearRect(0, 0, innerWidth, innerHeight);
 
     //Making circles
-    context.beginPath();
-    context.arc(x, y, radius, 0, Math.PI * 2, true);
-    context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    context.stroke();
-
+    let circle = new Circle(100, 200, Math.random() * 100);
+    circle.draw();
     //X + X Velocity (direction)
     if ( (x + radius >= innerWidth) || (x - radius <= 0)){
         dx = -dx;
