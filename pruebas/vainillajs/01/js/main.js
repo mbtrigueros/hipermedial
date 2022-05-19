@@ -80,12 +80,29 @@ class Circle {
 
 let circle = new Circle(100, 200, 100, 10, 10);
 
+let circles = [];
+
+for (let i = 0; i < 100; i++) {
+  let x = Math.random() * innerWidth;
+  let y = Math.random() * innerHeight;
+  let r = Math.random() * 100;
+  let dx = (Math.random() - 0.5) * 12;
+  let dy = (Math.random() - 0.5) * 12;
+  circles.push(new Circle(x, y, r, dx, dy));
+}
+
 //Animation Loop
 function animate() {
   //With this function you make the loop
   requestAnimationFrame(animate);
   context.clearRect(0, 0, innerWidth, innerHeight);
   //Making circles
+
+  circles.map((circle) => {
+    circle.draw();
+    circle.randomColor();
+    circle.move();
+  });
   circle.draw();
   circle.randomColor();
   circle.move();
