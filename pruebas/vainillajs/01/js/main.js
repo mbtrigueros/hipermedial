@@ -1,19 +1,19 @@
 // Canvas Reference: https://www.w3schools.com/graphics/canvas_reference.asp
 
 //Resizing the canvas according to the viewport
-let canvas = document.querySelector('canvas');
+let canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 //Context
-let context = canvas.getContext('2d');
+let context = canvas.getContext("2d");
 
-//Rectangle 
+//Rectangle
 
 // Reference Fill Rect: https://www.w3schools.com/tags/canvas_fillrect.asp
 //Reference Fill Style: https://www.w3schools.com/tags/canvas_fillstyle.asp
 
-context.fillRect(100, 100, 100, 100); 
+context.fillRect(100, 100, 100, 100);
 
 //Line
 
@@ -45,50 +45,50 @@ let a = Math.random();
 
 //Circle Class
 class Circle {
-    constructor(x, y, r, dx, dy){
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.dx = dx;
-        this.dy = dy;
-    }
+  constructor(x, y, r, dx, dy) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.dx = dx;
+    this.dy = dy;
+  }
 
-    draw(){
+  draw() {
     //Making circles
     context.beginPath();
     context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
-    context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     context.stroke();
-    }
+  }
 
-    move(){
+  randomColor() {
+    context.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
 
-    //this.draw();
+  move() {
     //X + X Velocity (direction)
-    if ( (this.x + this.r > innerWidth) || (this.x - this.r < 0)){
-        this.dx = -this.dx;
-    } 
-    //Y + Y Velocity (direction)
-    if ( (this.y + this.r > innerHeight) || (this.y - this.r < 0)){
-        this.dy = -this.dy;
-    } 
-    this.x += this.dx;
-    this.y += this.dy;
+    if (this.x + this.r > innerWidth || this.x - this.r < 0) {
+      this.dx = -this.dx;
     }
-
+    this.x += this.dx;
+    //Y + Y Velocity (direction)
+    if (this.y + this.r > innerHeight || this.y - this.r < 0) {
+      this.dy = -this.dy;
+    }
+    this.y += this.dy;
+  }
 }
 
-let circle = new Circle(100, 20, 20, 10, 10);
+let circle = new Circle(100, 200, 100, 10, 10);
 
 //Animation Loop
-function animate(){
-    //With this function you make the loop
-    requestAnimationFrame(animate);
-    context.clearRect(0, 0, innerWidth, innerHeight);
-
-    //Making circles
-    circle.draw();
-    circle.move();
+function animate() {
+  //With this function you make the loop
+  requestAnimationFrame(animate);
+  context.clearRect(0, 0, innerWidth, innerHeight);
+  //Making circles
+  circle.draw();
+  circle.randomColor();
+  circle.move();
 }
 
 //Call function
