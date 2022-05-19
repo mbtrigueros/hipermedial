@@ -74,46 +74,46 @@ class Circle {
 }
 
 //Rectangle Class
-class Rectangle {
-  constructor(x, y, w, h, dx, dy, r, g, b, a) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.dx = dx;
-    this.dy = dy;
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
-  }
+// class Rectangle {
+//   constructor(x, y, w, h, dx, dy, r, g, b, a) {
+//     this.x = x;
+//     this.y = y;
+//     this.w = w;
+//     this.h = h;
+//     this.dx = dx;
+//     this.dy = dy;
+//     this.r = r;
+//     this.g = g;
+//     this.b = b;
+//     this.a = a;
+//   }
 
-  draw() {
-    //Making circles
-    context.fillRect(this.x, this.y, this.w, this.h);
-    context.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
-  }
+//   draw() {
+//     //Making circles
+//     context.fillRect(this.x, this.y, this.w, this.h);
+//     context.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
+//   }
 
-  move() {
-    //X + X Velocity (direction)
-    if (this.x > innerWidth || this.x < 0) {
-      this.dx = -this.dx;
-    }
-    this.x += this.dx;
-    //Y + Y Velocity (direction)
-    if (this.y > innerHeight || this.y < 0) {
-      this.dy = -this.dy;
-    }
-    this.y += this.dy;
-  }
-}
+//   move() {
+//     //X + X Velocity (direction)
+//     if (this.x > innerWidth || this.x < 0) {
+//       this.dx = -this.dx;
+//     }
+//     this.x += this.dx;
+//     //Y + Y Velocity (direction)
+//     if (this.y > innerHeight || this.y < 0) {
+//       this.dy = -this.dy;
+//     }
+//     this.y += this.dy;
+//   }
+// }
 
 let circles = [];
 
 for (let i = 0; i < 50; i++) {
   let radius = Math.random() * 100;
-  let x = Math.random() * innerWidth - radius;
-  let y = Math.random() * innerHeight - radius;
+  let x = Math.random() * (innerWidth - radius * 2) + radius;
+  let y = Math.random() * (innerHeight - radius * 2) + radius;
   let dx = (Math.random() - 0.5) * 12;
   let dy = (Math.random() - 0.5) * 12;
   let r = Math.random() * 255;
@@ -123,7 +123,7 @@ for (let i = 0; i < 50; i++) {
   circles.push(new Circle(x, y, radius, dx, dy, r, g, b, a));
 }
 
-let rectangle = new Rectangle(100, 200, 200, 100, 5, 10, 200, 200, 0, 0.5);
+//let rectangle = new Rectangle(100, 200, 200, 100, 5, 10, 200, 200, 0, 0.5);
 
 //Animation Loop
 function animate() {
@@ -131,9 +131,6 @@ function animate() {
   requestAnimationFrame(animate);
   //context.clearRect(0, 0, innerWidth, innerHeight);
   //Making circles
-
-  rectangle.draw();
-  rectangle.move();
   circles.map((circle) => {
     circle.draw();
     circle.move();
