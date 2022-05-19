@@ -35,7 +35,8 @@ let context = canvas.getContext("2d");
 
 // Reference Arc: https://www.w3schools.com/tags/canvas_arc.asp
 
-//X & Y variables. dx = X Velocity dY = Y Velocity
+//JS Events
+//Reference: https://www.w3schools.com/js/js_events.asp
 
 //Circle Class
 class Circle {
@@ -70,6 +71,16 @@ class Circle {
       this.dy = -this.dy;
     }
     this.y += this.dy;
+    if (
+      mouse.x - this.x < 100 &&
+      mouse.x - this.x > -100 &&
+      mouse.y - this.y < 100 &&
+      mouse.y - this.y > -100
+    ) {
+      this.radius += 1;
+    } else if (this.radius > 2) {
+      this.radius -= 1;
+    }
   }
 }
 
@@ -114,12 +125,12 @@ for (let i = 0; i < 50; i++) {
   let radius = Math.random() * 100;
   let x = Math.random() * (innerWidth - radius * 2) + radius;
   let y = Math.random() * (innerHeight - radius * 2) + radius;
-  let dx = (Math.random() - 0.5) * 12;
-  let dy = (Math.random() - 0.5) * 12;
+  let dx = Math.random() - 0.5;
+  let dy = Math.random() - 0.5;
   let r = Math.random() * 255;
   let g = Math.random() * 255;
   let b = Math.random() * 255;
-  let a = Math.random() * 0.1;
+  let a = Math.random();
   circles.push(new Circle(x, y, radius, dx, dy, r, g, b, a));
 }
 
@@ -136,6 +147,22 @@ function animate() {
     circle.move();
   });
 }
+
+//Setup of a mouse object to use in the event
+
+const mouse = {
+  x: undefined,
+  y: undefined,
+};
+
+window.addEventListener("mousemove", (event) => {
+  //console.log(event); //The event argument is an object that has information about the event. Example: mouse position.
+
+  mouse.x = event.x;
+  mouse.y = event.y;
+  console.log(mouse);
+  circles.map((circle) => {});
+});
 
 //Call function
 animate();
