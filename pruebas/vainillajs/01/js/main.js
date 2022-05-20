@@ -72,10 +72,10 @@ class Circle {
     }
     this.y += this.dy;
     if (
-      mouse.x - this.x < 100 &&
-      mouse.x - this.x > -100 &&
-      mouse.y - this.y < 100 &&
-      mouse.y - this.y > -100
+      mouse.x - this.x < 50 &&
+      mouse.x - this.x > -50 &&
+      mouse.y - this.y < 50 &&
+      mouse.y - this.y > -50
     ) {
       this.radius += 1;
     } else if (this.radius > 2) {
@@ -121,8 +121,8 @@ class Circle {
 
 let circles = [];
 
-for (let i = 0; i < 50; i++) {
-  let radius = Math.random() * 100;
+for (let i = 0; i < 1000; i++) {
+  let radius = 10;
   let x = Math.random() * (innerWidth - radius * 2) + radius;
   let y = Math.random() * (innerHeight - radius * 2) + radius;
   let dx = Math.random() - 0.5;
@@ -140,7 +140,7 @@ for (let i = 0; i < 50; i++) {
 function animate() {
   //With this function you make the loop
   requestAnimationFrame(animate);
-  //context.clearRect(0, 0, innerWidth, innerHeight);
+  context.clearRect(0, 0, innerWidth, innerHeight);
   //Making circles
   circles.map((circle) => {
     circle.draw();
