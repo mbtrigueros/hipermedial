@@ -1,0 +1,20 @@
+//TYPOGRAPHY
+
+//VT323
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+$VT323: 'VT323', monospace;
+
+//COLORS
+
+$colors:(
+    'green': #95c5ac,
+    'lightBlue': #69809e,
+    'darkBlue': #4c5c87, 
+    'lightPurple': #443f7b,
+    'mediumPurple': #3f2c5f,
+    'darkPurple': #2a173b,
+);
+
+@function color($color-name){
+    @return map-get($colors, $color-name);
+}

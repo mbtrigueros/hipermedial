@@ -1,0 +1,23 @@
+body {
+    font-family: $VT323;
+    font-size: 1.2rem;
+    line-height: 1.1em;
+    color: color('green');
+}
+
+.title-xl{
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.title-lg{
+    font-size: 2.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.subtitle{
+    font-size: 2em;
+}
+

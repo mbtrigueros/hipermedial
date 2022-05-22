@@ -1,0 +1,59 @@
+.home{
+
+    &__main{
+    background-color: color('darkPurple');
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    height: 70vh;
+    }
+
+    &__title{
+        text-align: center;
+        transition: all .6s;
+        transform: skew(-18deg, 0.04deg);
+        text-shadow: 4px 1px color('mediumPurple');
+        animation: slideIn 2s ease-out, titleColorAnimation 5s 2s infinite ease-in-out;
+    }
+}
+
+
+.title-color-anim{
+    transition: color .3s;
+    animation: titleColorAnimation 5s infinite ease-in-out;
+}
+
+.slide-in{
+    transition: all .3s;
+    animation: slideIn 2s ease-out;
+}
+
+@keyframes titleColorAnimation{
+    0%{
+        color: color('green');
+    }
+    25%{
+        color: color('darkBlue');
+    }
+    50%{
+        color: color('darkPurple');
+    }
+    75%{
+        color: color('lightPurple');
+    }
+    100%{
+        color: color('green');
+    }
+}
+
+@keyframes slideIn{
+    0%{
+        transform: translateX(-50%);
+    }
+    90%{
+        transform:translateX(10%);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
