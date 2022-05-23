@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=PT+Sans&family=Inconsolata:wght@200&display=swap');
+
+body {
+	font: normal 100%/1.5 'PT Sans', sans-serif;
+	background: #060606;
+	color: #f8f8f8;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+a {
+	color: rgb(15, 230, 126);
+	text-decoration: none;
+	opacity: 0.75;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+article {
+	max-width: 680px;
+	padding: 0 30px;
+	margin: 3em auto;
+	box-sizing: border-box;
+}
+
+article h1 {
+	margin: 0;
+}
+
+article h1 b {
+	font-family: 'Major Mono Display', sans-serif;
+	font-size: 2.5em;
+	display: block;
+}
+
+article p {
+	margin-bottom: 1.5;
+}
+
+code {
+	font-family: 'Inconsolata', monospace;
+	font-weight: 200;
+}
+
+ol li {
+	font-size: 1.125em;
+	line-height: 1.25;
+	margin-bottom: 0.75em;
+}
+
+ol li::before {
+	font-family: 'Inconsolata', monospace;
+	font-weight: 200;
+	content: ">>> ";
+}
+
+#resultado {
+	font-size: 2em;
+	padding: 2em 50px;
+	margin: 1em 0;
+	border: 1px solid #f8f8f8;
+}
+
+#resultado span {
+	animation: fadeIn 6s ease-in-out;
+	color: rgb(15, 230, 126);
+	transition: all 1s ease-in-out;
+}
+
+#resultado span:nth-child(5n+1) { /* Apunta a los elementos 1, 6, 11, 16, etc. */
+	animation-delay: -3s; /* Un delay negativo hace que la animación comience empezada */
+}
+
+#resultado span:nth-child(5n+2) { /* Apunta a los elementos 2, 7, 12, 17, etc. */
+	animation-delay: -1.5s;
+}
+
+#resultado span:nth-child(5n+3) { /* Apunta a los elementos 3, 8, 13, 18, etc. */
+	animation-delay: -1s;
+}
+
+#resultado span:nth-child(5n+4) { /* Apunta a los elementos 4, 9, 14, 19, etc. */
+	animation-delay: -2.5s;
+}
+
+#resultado span:nth-child(5n+5) { /* Apunta a los elementos 5, 10, 15, 20, etc. */
+	animation-delay: -1.75s;
+}
+
+@keyframes fadeIn {
+	0% {
+		filter: blur(15px);
+		opacity: 0;
+	}
+	50% {
+		filter: blur(15px);
+		opacity: 0;
+	}
+	100% {
+		filter: none;
+		opacity: 1;
+	}
+}
+
+/* Si llegaste hasta acá y terminaste el desafío usando <span>, descomentá las siguientes reglas y mirá el efecto ;) */
+
+/* #resultado:hover span {
+	filter: blur(15px);
+	opacity: 0.5;
+}
+
+#resultado:hover span:hover {
+	filter: none;
+	opacity: 1;
+} */
