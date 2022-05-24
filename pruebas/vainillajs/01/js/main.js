@@ -38,6 +38,10 @@ let context = canvas.getContext("2d");
 //JS Events
 //Reference: https://www.w3schools.com/js/js_events.asp
 
+//Global variables
+let maxRadius = 40;
+let minRadius = 2;
+
 //Circle Class
 class Circle {
   constructor(x, y, radius, dx, dy, r, g, b, a) {
@@ -77,8 +81,8 @@ class Circle {
       mouse.y - this.y < 50 &&
       mouse.y - this.y > -50
     ) {
-      if (this.radius < 40) this.radius += 1; //We establish a max radius
-    } else if (this.radius > 2) {
+      if (this.radius < maxRadius) this.radius += 1; //We establish a max radius
+    } else if (this.radius > minRadius) {
       this.radius -= 1;
     }
   }
@@ -155,7 +159,7 @@ const mouse = {
   y: undefined,
 };
 
-window.addEventListener("mousemove", (event) => {
+window.addEventListener("click", (event) => {
   //console.log(event); //The event argument is an object that has information about the event. Example: mouse position.
 
   mouse.x = event.x;
