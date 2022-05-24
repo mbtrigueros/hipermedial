@@ -77,7 +77,7 @@ class Circle {
       mouse.y - this.y < 50 &&
       mouse.y - this.y > -50
     ) {
-      this.radius += 1;
+      if (this.radius < 40) this.radius += 1; //We establish a max radius
     } else if (this.radius > 2) {
       this.radius -= 1;
     }
