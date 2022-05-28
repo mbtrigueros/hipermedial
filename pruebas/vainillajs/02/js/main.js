@@ -46,6 +46,9 @@ class Rectangle {
   draw(){
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
+    for (let index = 0; index < 10; index++) {
+      this.window(random(10, this.w-10), random(10, 100));
+    }
   }
 }
 
@@ -67,7 +70,7 @@ canvas.addEventListener("click", (event) => {
   let rectangle = new Rectangle(mouse.x, mouse.y, random(50, 300)/2, mouse.y * canvas.height);
 
   rectangle.draw();
-  rectangle.window(10, 10);
+
 
   console.log(mouse);
   console.log(rectangle);
