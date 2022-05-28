@@ -8,4 +8,5 @@ div {
 canvas{
     margin: 100px auto;
     border: black 1px solid;
+    background-color: black;
 }

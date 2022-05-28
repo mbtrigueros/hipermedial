@@ -46,12 +46,13 @@ class Rectangle {
   draw(){
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
-    for (let index = 0; index < 10; index++) {
-      this.window(random(10, this.w-10), random(10, 100));
+    for (let x = 0; x < this.w-15; x+=10) {
+      for (let y = 0; y < this.h; y+=20) {
+        this.window(x+5, y+10);
+      }
     }
   }
 }
-
 //JS Events
 //Reference: https://www.w3schools.com/js/js_events.asp
 
