@@ -2,11 +2,26 @@
 
 //Resizing the canvas according to the viewport
 let canvas = document.querySelector("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth/2;
+canvas.height = window.innerHeight/2;
 
 //Context
 let context = canvas.getContext("2d");
+
+//Random function
+function random(min = 0, max = 100) {
+  // find diff
+  let difference = max - min;
+  // generate random number 
+  let rand = Math.random();
+  // multiply with difference 
+  rand = Math.floor( rand * difference);
+  // add with min value 
+  rand = rand + min;
+  return rand;
+}
+
+let windows = [];
 
 //Rectangle Class
 class Rectangle {
@@ -19,13 +34,18 @@ class Rectangle {
       r: Math.random() * 255,
       g: Math.random() * 255,
       b: Math.random() * 255,
-      a: Math.random() * 2,
+      a: 1,
     };
   }
 
+  window(offsetX, offsetY){
+    context.fillStyle = 'white';
+    context.fillRect(this.x + offsetX, this.y + offsetY, 5, 5);
+  }
+
   draw(){
-    context.strokeRect(this.x, this.y, this.w, this.h);
-    context.strokeStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
+    context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
+    context.fillRect(this.x, this.y, this.w, this.h);
   }
 }
 
@@ -38,15 +58,18 @@ const mouse = {
   y: undefined,
 };
 
-window.addEventListener("click", (event) => {
-  //console.log(event); //The event argument is an object that has information about the event. Example: mouse position.
+canvas.addEventListener("click", (event) => {
+  console.log(event); //The event argument is an object that has information about the event. Example: mouse position.
 
-  mouse.x = event.x;
-  mouse.y = event.y;
+  mouse.x = event.offsetX;
+  mouse.y = event.offsetY;
 
-  let rectangle = new Rectangle(mouse.x, mouse.y, Math.random() * 100, Math.random() * 200);
+  let rectangle = new Rectangle(mouse.x, mouse.y, random(50, 300)/2, mouse.y * canvas.height);
+
   rectangle.draw();
+  rectangle.window(10, 10);
 
   console.log(mouse);
+  console.log(rectangle);
 });
 

@@ -1,3 +1,11 @@
+div {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas{
-    display: block; /* You put display: block; because otherwise it'll generate a scroll */
+    margin: 100px auto;
+    border: black 1px solid;
 }
