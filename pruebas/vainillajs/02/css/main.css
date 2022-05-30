@@ -1,4 +1,16 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    color: white;
+}
+
+h1{
+    font-size: 2.5em;
+    text-transform: capitalize;
+}
+
 div {
+    margin: 100px auto;
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -6,7 +18,7 @@ div {
 }
 
 canvas{
-    margin: 100px auto;
-    border: black 1px solid;
+    margin: 50px auto;
+    border: white 2px solid;
     background-color: black;
 }

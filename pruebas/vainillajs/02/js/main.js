@@ -1,6 +1,6 @@
 // Canvas Reference: https://www.w3schools.com/graphics/canvas_reference.asp
 
-//Resizing the canvas according to the viewport
+//Resizing the canvas
 let canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth/2;
 canvas.height = window.innerHeight/2;
@@ -21,8 +21,6 @@ function random(min = 0, max = 100) {
   return rand;
 }
 
-let windows = [];
-
 //Building Class
 class Building {
   constructor(x, y, w, h){
@@ -31,9 +29,9 @@ class Building {
     this.w = w;
     this.h = h;
     this.color = {
-      r: Math.random() * 255,
-      g: Math.random() * 255,
-      b: Math.random() * 255,
+      r: random(100, 255), //pastel colors :)
+      g: random(100, 255),
+      b: random(100, 255),
       a: 1,
     };
   }
@@ -51,26 +49,26 @@ class Building {
     context.fillRect(x, y, w, h);
   }
 
-  door(){
-    let x = this.x +this.w/4;
-    let y = canvas.height-20;
-    let w = this.w/2;
-    let h = 30;
-    context.shadowBlur = 5;
-    context.shadowColor = 'gray';
-    context.shadowColor = 'transparent';
-    context.fillStyle = 'white';
-    // context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
-    context.fillRect(x, y, w, h);
-    context.lineWidth = 1;
-    context.strokeStyle = 'white';
-    context.strokeRect(x, y, w, h);
-  }
+  // door(){
+  //   let x = this.x +this.w/4;
+  //   let y = canvas.height-20;
+  //   let w = this.w/2;
+  //   let h = 30;
+  //   context.shadowBlur = 5;
+  //   context.shadowColor = 'gray';
+  //   context.shadowColor = 'transparent';
+  //   context.fillStyle = 'white';
+  //   // context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
+  //   context.fillRect(x, y, w, h);
+  //   context.lineWidth = 1;
+  //   context.strokeStyle = 'white';
+  //   context.strokeRect(x, y, w, h);
+  // }
 
   draw(){
-    context.shadowBlur = 5;
-    context.shadowOffsetX = 2;
-    context.shadowOffsetY = 2;
+    context.shadowBlur = 2;
+    context.shadowOffsetX = 1;
+    context.shadowOffsetY = 1;
     context.shadowColor = 'gray';
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
@@ -82,12 +80,10 @@ class Building {
         this.window(x+this.w/4, y+10);
       }
     }
-    // this.door();
   }
 }
 
 //Create Stars
-
 function stars(){
   for (let index = 0; index < 1000; index++) {
     let x = random(0, canvas.width);
@@ -119,6 +115,7 @@ const mouse = {
   y: undefined,
 }
 
+//Add On Click event
 canvas.addEventListener("click", (event) => {
   console.log(event); //The event argument is an object that has information about the event. Example: mouse position.
 
@@ -127,10 +124,10 @@ canvas.addEventListener("click", (event) => {
 
   let x= mouse.x;
   let y= mouse.y;
-  let w=random(100, 220)/2;
-  let h=(mouse.y * canvas.height);
+  let w= random(100, 280)/2;
+  let h= mouse.y * canvas.height; //The height of the building depends on where you put your mouse
 
-  let building = new Building(x,y, w, h);
+  let building = new Building(x, y, w, h);
   building.draw();
 });
 
