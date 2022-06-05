@@ -160,8 +160,11 @@ canvas.addEventListener("click", (event) => {
   //Change new building position if it collides with another one
   for (let i = 0; i < buildings.length; i++) {
     if (x + w >= buildings[i].x && x <= buildings[i].x + buildings[i].w) {
+      isColliding = true;
       x = buildings[i].x + buildings[i].w + 5;
       i = -1;
+    } else {
+      isColliding = false;
     }
   }
 
