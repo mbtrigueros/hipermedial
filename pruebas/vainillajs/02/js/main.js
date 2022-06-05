@@ -2,8 +2,8 @@
 
 //Resizing the canvas
 let canvas = document.querySelector("canvas");
-canvas.width = window.innerWidth/2;
-canvas.height = window.innerHeight/2;
+canvas.width = window.innerWidth / 2;
+canvas.height = window.innerHeight / 2;
 
 //Context
 let context = canvas.getContext("2d");
@@ -12,18 +12,20 @@ let context = canvas.getContext("2d");
 function random(min = 0, max = 100) {
   // find diff
   let difference = max - min;
-  // generate random number 
+  // generate random number
   let rand = Math.random();
-  // multiply with difference 
-  rand = Math.floor( rand * difference);
-  // add with min value 
+  // multiply with difference
+  rand = Math.floor(rand * difference);
+  // add with min value
   rand = rand + min;
   return rand;
 }
 
+let isColliding = false;
+
 //Building Class
 class Building {
-  constructor(x, y, w, h){
+  constructor(x, y, w, h) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -36,7 +38,7 @@ class Building {
     };
   }
 
-  window(offsetX, offsetY){
+  window(offsetX, offsetY) {
     let x = this.x + offsetX;
     let y = this.y + offsetY;
     let w = 5;
@@ -44,8 +46,8 @@ class Building {
     context.shadowBlur = 5;
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
-    context.shadowColor = 'white';
-    context.fillStyle = 'white';
+    context.shadowColor = "white";
+    context.fillStyle = "white";
     context.fillRect(x, y, w, h);
   }
 
@@ -65,26 +67,44 @@ class Building {
   //   context.strokeRect(x, y, w, h);
   // }
 
-  draw(){
+  draw() {
     context.shadowBlur = 2;
     context.shadowOffsetX = 1;
     context.shadowOffsetY = 1;
-    context.shadowColor = 'gray';
+    context.shadowColor = "gray";
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
     context.lineWidth = 3;
-    context.strokeStyle = 'white';
+    context.strokeStyle = "white";
     context.strokeRect(this.x, this.y, this.w, this.h);
-    for (let x = 0; x < this.w/2; x+=10) {
-      for (let y = 0; y < this.h; y+=10) {
-        this.window(x+this.w/4, y+10);
+    for (let x = 0; x < this.w / 2; x += 10) {
+      for (let y = 0; y < this.h; y += 10) {
+        this.window(x + this.w / 4, y + 10);
       }
     }
+  }
+
+  //Collision detection
+  update(buildings) {
+    for (let index = 0; index < buildings.length; index++) {
+      if (this === buildings[index]) continue;
+      if (
+        this.x + this.w >= buildings[index].x &&
+        this.x <= buildings[index].x + buildings[index].w
+      ) {
+        isColliding = true;
+        console.log(isColliding);
+      } else {
+        isColliding = false;
+        console.log(isColliding);
+      }
+    }
+    this.draw();
   }
 }
 
 //Create Stars
-function stars(){
+function stars() {
   for (let index = 0; index < 1000; index++) {
     let x = random(0, canvas.width);
     let y = random(0, canvas.height);
@@ -92,19 +112,27 @@ function stars(){
     let w = 1;
     let color = {
       r: 255,
-      g: 255, 
-      b: 255, 
-      a: 1}
+      g: 255,
+      b: 255,
+      a: 1,
+    };
     context.shadowBlur = 1;
     context.shadowOffsetX = 1;
     context.shadowOffsetY = 1;
-    context.shadowColor = 'white';
+    context.shadowColor = "white";
     context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
     context.fillRect(x, y, w, h);
   }
 }
 
 stars();
+
+//Collision detection function
+function collisionDetection(a, b) {
+  if (a.x + a.width >= b.x && a.x <= b.x + b.width) {
+    return true;
+  }
+}
 
 //JS Events
 //Reference: https://www.w3schools.com/js/js_events.asp
@@ -113,7 +141,9 @@ stars();
 const mouse = {
   x: undefined,
   y: undefined,
-}
+};
+
+let buildings = [];
 
 //Add On Click event
 canvas.addEventListener("click", (event) => {
@@ -122,13 +152,21 @@ canvas.addEventListener("click", (event) => {
   mouse.x = event.offsetX;
   mouse.y = event.offsetY;
 
-  let x= mouse.x;
-  let y= mouse.y;
-  let w= random(100, 280)/2;
-  let h= mouse.y * canvas.height; //The height of the building depends on where you put your mouse
+  let x = mouse.x;
+  let y = mouse.y;
+  let w = random(100, 280) / 2;
+  let h = mouse.y * canvas.height; //The height of the building depends on where you put your mouse
 
-  let building = new Building(x, y, w, h);
-  building.draw();
+  //Change new building position if it collides with another one
+  for (let i = 0; i < buildings.length; i++) {
+    if (x + w >= buildings[i].x && x <= buildings[i].x + buildings[i].w) {
+      x = buildings[i].x + buildings[i].w + 5;
+      i = -1;
+    }
+  }
+
+  buildings.push(new Building(x, y, w, h));
+  buildings.forEach((newBuilding) => {
+    newBuilding.update(buildings);
+  });
 });
-
-

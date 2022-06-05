@@ -21,4 +21,5 @@ canvas{
     margin: 50px auto;
     border: white 2px solid;
     background-color: black;
+    cursor: pointer;
 }
