@@ -23,13 +23,13 @@ function random(min = 0, max = 100) {
 
 let isColliding = false;
 
-//Building Class
-class Building {
-  constructor(x, y, w, h) {
+//Block Class
+class Block {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
+    this.w = 50;
+    this.h = 50;
     this.color = {
       r: random(100, 255), //pastel colors :)
       g: random(100, 255),
@@ -41,8 +41,8 @@ class Building {
   window(offsetX, offsetY) {
     let x = this.x + offsetX;
     let y = this.y + offsetY;
-    let w = 5;
-    let h = 5;
+    let w = 10;
+    let h = 10;
     context.shadowBlur = 5;
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
@@ -68,29 +68,26 @@ class Building {
   // }
 
   draw() {
-    context.shadowBlur = 2;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 1;
-    context.shadowColor = "gray";
+    // context.shadowBlur = 2;
+    // context.shadowOffsetX = 1;
+    // context.shadowOffsetY = 1;
+    // context.shadowColor = "gray";
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
-    context.lineWidth = 3;
+    // context.lineWidth = 3;
     context.strokeStyle = "white";
     context.strokeRect(this.x, this.y, this.w, this.h);
-    for (let x = 0; x < this.w / 2; x += 10) {
-      for (let y = 0; y < this.h; y += 10) {
-        this.window(x + this.w / 4, y + 10);
-      }
-    }
+
+    this.window(20, 20);
   }
 
   //Collision detection
-  update(buildings) {
-    for (let index = 0; index < buildings.length; index++) {
-      if (this === buildings[index]) continue;
+  update(Blocks) {
+    for (let index = 0; index < Blocks.length; index++) {
+      if (this === Blocks[index]) continue;
       if (
-        this.x + this.w >= buildings[index].x &&
-        this.x <= buildings[index].x + buildings[index].w
+        this.x + this.w >= Blocks[index].x &&
+        this.x <= Blocks[index].x + Blocks[index].w
       ) {
         isColliding = true;
         console.log(isColliding);
@@ -143,7 +140,7 @@ const mouse = {
   y: undefined,
 };
 
-let buildings = [];
+let blocks = [];
 
 //Add On Click event
 canvas.addEventListener("click", (event) => {
@@ -154,22 +151,52 @@ canvas.addEventListener("click", (event) => {
 
   let x = mouse.x;
   let y = mouse.y;
-  let w = random(100, 280) / 2;
-  let h = mouse.y * canvas.height; //The height of the building depends on where you put your mouse
 
-  //Change new building position if it collides with another one
-  for (let i = 0; i < buildings.length; i++) {
-    if (x + w >= buildings[i].x && x <= buildings[i].x + buildings[i].w) {
+  let s = snapToGrid(x, y);
+
+  x = s.x;
+  y = s.y;
+
+  //Change new Block position if it collides with another one
+  for (let i = 0; i < blocks.length; i++) {
+    if (
+      x + 50 >= blocks[i].x &&
+      x <= blocks[i].x + 50 &&
+      y + 50 >= blocks[i].y &&
+      y <= blocks[i].y + 50
+    ) {
       isColliding = true;
-      x = buildings[i].x + buildings[i].w + 5;
-      i = -1;
     } else {
       isColliding = false;
     }
   }
-
-  buildings.push(new Building(x, y, w, h));
-  buildings.forEach((newBuilding) => {
-    newBuilding.draw(buildings);
+  blocks.push(new Block(x, y));
+  blocks.forEach((newBlock) => {
+    newBlock.draw(blocks);
   });
 });
+
+//GRID
+let gridSize = 50;
+
+for (let i = gridSize; i < canvas.width; i += gridSize) {
+  for (let j = gridSize; j < canvas.height; j += gridSize) {
+    drawPoints(i, j, "white");
+  }
+}
+// used to draw points
+function drawPoints(x, y, color) {
+  context.beginPath();
+  context.arc(x, y, 2, 0, 2 * Math.PI);
+  context.fillStyle = color;
+  context.fill();
+  context.closePath();
+}
+function snapToGrid(x, y) {
+  let modX = x % gridSize;
+  let modY = y % gridSize;
+  let result = { x: 0, y: 0 };
+  result.x = modX > gridSize / 2 ? x + (gridSize - modX) : x - modX;
+  result.y = modY > gridSize / 2 ? y + (gridSize - modY) : y - modY;
+  return result;
+}
