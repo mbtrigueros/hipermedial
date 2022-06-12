@@ -2,8 +2,8 @@
 
 //Resizing the canvas
 let canvas = document.querySelector("canvas");
-canvas.width = window.innerWidth / 2;
-canvas.height = window.innerHeight / 2;
+canvas.width = 960;
+canvas.height = 500;
 
 //Context
 let context = canvas.getContext("2d");
@@ -22,14 +22,15 @@ function random(min = 0, max = 100) {
 }
 
 let isColliding = false;
+let isDrawn = false;
 
 //Block Class
 class Block {
-  constructor(x, y) {
+  constructor(x, y, w, h) {
     this.x = x;
     this.y = y;
-    this.w = 50;
-    this.h = 50;
+    this.w = w;
+    this.h = h;
     this.color = {
       r: random(100, 255), //pastel colors :)
       g: random(100, 255),
@@ -44,34 +45,18 @@ class Block {
     let w = 10;
     let h = 10;
     context.shadowBlur = 5;
-    context.shadowOffsetX = 0;
+    context.shadowOffsetX = 1;
     context.shadowOffsetY = 0;
     context.shadowColor = "white";
     context.fillStyle = "white";
     context.fillRect(x, y, w, h);
   }
 
-  // door(){
-  //   let x = this.x +this.w/4;
-  //   let y = canvas.height-20;
-  //   let w = this.w/2;
-  //   let h = 30;
-  //   context.shadowBlur = 5;
-  //   context.shadowColor = 'gray';
-  //   context.shadowColor = 'transparent';
-  //   context.fillStyle = 'white';
-  //   // context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
-  //   context.fillRect(x, y, w, h);
-  //   context.lineWidth = 1;
-  //   context.strokeStyle = 'white';
-  //   context.strokeRect(x, y, w, h);
-  // }
-
   draw() {
-    // context.shadowBlur = 2;
-    // context.shadowOffsetX = 1;
-    // context.shadowOffsetY = 1;
-    // context.shadowColor = "gray";
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowColor = "gray";
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
     // context.lineWidth = 3;
@@ -79,23 +64,11 @@ class Block {
     context.strokeRect(this.x, this.y, this.w, this.h);
 
     this.window(20, 20);
+
+    isDrawn = true;
   }
 
-  //Collision detection
-  update(Blocks) {
-    for (let index = 0; index < Blocks.length; index++) {
-      if (this === Blocks[index]) continue;
-      if (
-        this.x + this.w >= Blocks[index].x &&
-        this.x <= Blocks[index].x + Blocks[index].w
-      ) {
-        isColliding = true;
-        console.log(isColliding);
-      } else {
-        isColliding = false;
-        console.log(isColliding);
-      }
-    }
+  update() {
     this.draw();
   }
 }
@@ -135,7 +108,7 @@ function collisionDetection(a, b) {
 //Reference: https://www.w3schools.com/js/js_events.asp
 
 //Setup of a mouse object to use in the event
-const mouse = {
+let mouse = {
   x: undefined,
   y: undefined,
 };
@@ -152,7 +125,8 @@ canvas.addEventListener("click", (event) => {
   let x = mouse.x;
   let y = mouse.y;
 
-  let s = snapToGrid(x, y);
+  let s = 0;
+  s = snapToGrid(x, y);
 
   x = s.x;
   y = s.y;
@@ -160,19 +134,34 @@ canvas.addEventListener("click", (event) => {
   //Change new Block position if it collides with another one
   for (let i = 0; i < blocks.length; i++) {
     if (
-      x + 50 >= blocks[i].x &&
-      x <= blocks[i].x + 50 &&
-      y + 50 >= blocks[i].y &&
-      y <= blocks[i].y + 50
+      x + blocks[i].w > blocks[i].x &&
+      x < blocks[i].x + blocks[i].w &&
+      y + blocks[i].h > blocks[i].y &&
+      y < blocks[i].y + blocks[i].h
     ) {
       isColliding = true;
     } else {
       isColliding = false;
     }
   }
-  blocks.push(new Block(x, y));
+
+  if (!isColliding) blocks.push(new Block(x, y, 50, 50));
   blocks.forEach((newBlock) => {
-    newBlock.draw(blocks);
+    for (let i = 0; i < blocks.length; i++) {
+      if (newBlock === blocks[i]) continue;
+      if (
+        newBlock.x + blocks[i].w > blocks[i].x &&
+        newBlock.x < blocks[i].x + blocks[i].w &&
+        newBlock.y + blocks[i].h > blocks[i].y &&
+        newBlock.y < blocks[i].y + blocks[i].h
+      ) {
+        isColliding = true;
+        blocks.pop();
+      } else {
+        isColliding = false;
+      }
+    }
+    newBlock.update();
   });
 });
 
