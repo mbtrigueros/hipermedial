@@ -109,6 +109,7 @@ canvas.addEventListener("click", (event) => {
   y = s.y;
 
   let can;
+  let gridRow = 3;
 
   for (let i = 0; i < blocks.length; i++) {
     if (y == canvas.height - gridSize) {
@@ -118,11 +119,13 @@ canvas.addEventListener("click", (event) => {
     if (y + h >= blocks[i].y && x == blocks[i].x) {
       can = true;
       console.log("no esta en el piso, pero esta arriba");
-      if (canvas.height - y == gridSize * 2) {
-        //detect how high is the block
-        a = 0.1;
-      }
     }
+  }
+
+  if (canvas.height - y == gridSize * gridRow) {
+    //detect how high is the block
+    y -= gridSize;
+    h += gridSize; //TEST
   }
 
   if (y == canvas.height - gridSize || can)
@@ -132,9 +135,9 @@ canvas.addEventListener("click", (event) => {
     for (let i = 0; i < blocks.length; i++) {
       if (newBlock === blocks[i]) continue;
       if (
-        newBlock.x + blocks[i].w > blocks[i].x &&
+        newBlock.x + newBlock.w > blocks[i].x &&
         newBlock.x < blocks[i].x + blocks[i].w &&
-        newBlock.y + blocks[i].h > blocks[i].y &&
+        newBlock.y + newBlock.h > blocks[i].y &&
         newBlock.y < blocks[i].y + blocks[i].h
       ) {
         blocks.pop();
