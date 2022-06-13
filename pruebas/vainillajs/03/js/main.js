@@ -8,22 +8,6 @@ canvas.height = 500;
 //Context
 let context = canvas.getContext("2d");
 
-//Random function
-function random(min = 0, max = 100) {
-  // find diff
-  let difference = max - min;
-  // generate random number
-  let rand = Math.random();
-  // multiply with difference
-  rand = Math.floor(rand * difference);
-  // add with min value
-  rand = rand + min;
-  return rand;
-}
-
-let isColliding = false;
-let isDrawn = false;
-
 //Block Class
 class Block {
   constructor(x, y, w, h) {
@@ -62,10 +46,7 @@ class Block {
     // context.lineWidth = 3;
     context.strokeStyle = "white";
     context.strokeRect(this.x, this.y, this.w, this.h);
-
     this.window(20, 20);
-
-    isDrawn = true;
   }
 
   update() {
@@ -117,6 +98,8 @@ canvas.addEventListener("click", (event) => {
 
   let x = mouse.x;
   let y = mouse.y;
+  let w = 50;
+  let h = 50;
 
   let s = 0;
   s = snapToGrid(x, y);
@@ -124,18 +107,21 @@ canvas.addEventListener("click", (event) => {
   x = s.x;
   y = s.y;
 
-  let can = true;
+  let can;
 
   for (let i = 0; i < blocks.length; i++) {
-    if (Math.abs(y - blocks[i].y) > gridSize || y != canvas.height - gridSize) {
-      //console.log();
-      console.log(Math.abs(y - blocks[i].y));
-      can = false;
+    if (y == canvas.height - gridSize) {
+      can = true;
+      console.log("esta en el piso");
+    }
+    if (y + h >= blocks[i].y && x == blocks[i].x) {
+      can = true;
+      console.log("no esta en el piso, pero esta arriba");
     }
   }
-  console.log(canvas.height - gridSize, y);
 
-  blocks.push(new Block(x, y, 50, 50));
+  if (y == canvas.height - gridSize || can) blocks.push(new Block(x, y, w, h));
+
   blocks.forEach((newBlock) => {
     for (let i = 0; i < blocks.length; i++) {
       if (newBlock === blocks[i]) continue;
@@ -148,6 +134,7 @@ canvas.addEventListener("click", (event) => {
         blocks.pop();
       }
     }
+
     newBlock.update();
   });
 });
@@ -188,4 +175,17 @@ function snapToGrid(x, y) {
   result.x = modX > gridSize / 2 ? x + (gridSize - modX) : x - modX;
   result.y = modY > gridSize / 2 ? y + (gridSize - modY) : y - modY;
   return result;
+}
+
+//Random function
+function random(min = 0, max = 100) {
+  // find diff
+  let difference = max - min;
+  // generate random number
+  let rand = Math.random();
+  // multiply with difference
+  rand = Math.floor(rand * difference);
+  // add with min value
+  rand = rand + min;
+  return rand;
 }
