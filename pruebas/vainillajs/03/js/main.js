@@ -10,16 +10,16 @@ let context = canvas.getContext("2d");
 
 //Block Class
 class Block {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, a) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    this.a = a;
     this.color = {
       r: random(100, 255), //pastel colors :)
       g: random(100, 255),
       b: random(100, 255),
-      a: 1,
     };
   }
 
@@ -41,7 +41,7 @@ class Block {
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
     context.shadowColor = "gray";
-    context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.color.a})`;
+    context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
     // context.lineWidth = 3;
     context.strokeStyle = "white";
@@ -100,6 +100,7 @@ canvas.addEventListener("click", (event) => {
   let y = mouse.y;
   let w = 50;
   let h = 50;
+  let a = 1;
 
   let s = 0;
   s = snapToGrid(x, y);
@@ -117,10 +118,15 @@ canvas.addEventListener("click", (event) => {
     if (y + h >= blocks[i].y && x == blocks[i].x) {
       can = true;
       console.log("no esta en el piso, pero esta arriba");
+      if (canvas.height - y == gridSize * 2) {
+        //detect how high is the block
+        a = 0.1;
+      }
     }
   }
 
-  if (y == canvas.height - gridSize || can) blocks.push(new Block(x, y, w, h));
+  if (y == canvas.height - gridSize || can)
+    blocks.push(new Block(x, y, w, h, a));
 
   blocks.forEach((newBlock) => {
     for (let i = 0; i < blocks.length; i++) {
