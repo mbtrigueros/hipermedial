@@ -95,14 +95,7 @@ function stars() {
   }
 }
 
-stars();
-
-//Collision detection function
-function collisionDetection(a, b) {
-  if (a.x + a.width >= b.x && a.x <= b.x + b.width) {
-    return true;
-  }
-}
+//stars();
 
 //JS Events
 //Reference: https://www.w3schools.com/js/js_events.asp
@@ -131,21 +124,18 @@ canvas.addEventListener("click", (event) => {
   x = s.x;
   y = s.y;
 
-  //Change new Block position if it collides with another one
+  let can = true;
+
   for (let i = 0; i < blocks.length; i++) {
-    if (
-      x + blocks[i].w > blocks[i].x &&
-      x < blocks[i].x + blocks[i].w &&
-      y + blocks[i].h > blocks[i].y &&
-      y < blocks[i].y + blocks[i].h
-    ) {
-      isColliding = true;
-    } else {
-      isColliding = false;
+    if (Math.abs(y - blocks[i].y) > gridSize || y != canvas.height - gridSize) {
+      //console.log();
+      console.log(Math.abs(y - blocks[i].y));
+      can = false;
     }
   }
+  console.log(canvas.height - gridSize, y);
 
-  if (!isColliding) blocks.push(new Block(x, y, 50, 50));
+  blocks.push(new Block(x, y, 50, 50));
   blocks.forEach((newBlock) => {
     for (let i = 0; i < blocks.length; i++) {
       if (newBlock === blocks[i]) continue;
@@ -155,14 +145,24 @@ canvas.addEventListener("click", (event) => {
         newBlock.y + blocks[i].h > blocks[i].y &&
         newBlock.y < blocks[i].y + blocks[i].h
       ) {
-        isColliding = true;
         blocks.pop();
-      } else {
-        isColliding = false;
       }
     }
     newBlock.update();
   });
+});
+
+//Erase last block added on right click
+canvas.addEventListener("auxclick", (e) => {
+  blocks.pop();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  blocks.forEach((newBlock) => {
+    newBlock.update();
+  });
+});
+
+canvas.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
 });
 
 //GRID
@@ -170,7 +170,7 @@ let gridSize = 50;
 
 for (let i = gridSize; i < canvas.width; i += gridSize) {
   for (let j = gridSize; j < canvas.height; j += gridSize) {
-    drawPoints(i, j, "white");
+    drawPoints(i, j, "transparent");
   }
 }
 // used to draw points
