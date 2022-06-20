@@ -23,18 +23,14 @@ class Block {
     };
   }
 
-  // window(offsetX, offsetY) {
-  //   let x = this.x + offsetX;
-  //   let y = this.y + offsetY;
-  //   let w = 1;
-  //   let h = 1;
-  //   context.shadowBlur = 1;
-  //   context.shadowOffsetX = 1;
-  //   context.shadowOffsetY = 0;
-  //   context.shadowColor = "white";
-  //   context.fillStyle = "white";
-  //   context.fillRect(x, y, w, h);
-  // }
+  window() {
+    let x = this.x + 5;
+    let y = this.y + this.h;
+    let w = this.w / 2;
+    let h = this.h / 2;
+    context.fillStyle = "white";
+    context.fillRect(x, y, w, h);
+  }
 
   draw() {
     context.shadowBlur = 0;
@@ -43,14 +39,21 @@ class Block {
     context.shadowColor = "gray";
     context.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.a})`;
     context.fillRect(this.x, this.y, this.w, this.h);
+    context.fillRect(this.x, this.y + this.h, this.w, this.h / 2);
+
     // context.lineWidth = 3;
     context.strokeStyle = "white";
     context.strokeRect(this.x, this.y, this.w, this.h);
-    //this.window(20, 20);
+  }
+  drawRoof() {
+    context.fillRect(this.x, this.y + this.h, this.w, this.h / 2);
+    context.strokeRect(this.x, this.y + this.h, this.w, this.h / 2);
   }
 
   update() {
+    this.drawRoof();
     this.draw();
+    this.window();
   }
 }
 
@@ -98,8 +101,8 @@ canvas.addEventListener("click", (event) => {
 
   let x = mouse.x;
   let y = mouse.y;
-  let w = 10;
-  let h = 10;
+  let w = 20;
+  let h = 20;
   let a = 1;
 
   let s = 0;
@@ -111,19 +114,17 @@ canvas.addEventListener("click", (event) => {
   let can;
   let gridRow = 2;
 
-  for (let i = 0; i < blocks.length; i++) {
-    if (y == canvas.height - gridSize) {
-      can = true;
-      console.log("esta en el piso");
-    }
-    if (y + h >= blocks[i].y && x == blocks[i].x) {
-      can = true;
-      console.log("no esta en el piso, pero esta arriba");
-    }
-  }
-
-  if (y == canvas.height - gridSize || can)
-    blocks.push(new Block(x, y, w, h, a));
+  // for (let i = 0; i < blocks.length; i++) {
+  //   if (y == canvas.height - gridSize) {
+  //     can = true;
+  //     console.log("esta en el piso");
+  //   }
+  //   if (y + h >= blocks[i].y && x == blocks[i].x) {
+  //     can = true;
+  //     console.log("no esta en el piso, pero esta arriba");
+  //   }
+  // }
+  blocks.push(new Block(x, y, w, h, a));
 
   blocks.forEach((newBlock) => {
     for (let i = 0; i < blocks.length; i++) {
@@ -138,16 +139,16 @@ canvas.addEventListener("click", (event) => {
       }
     }
 
-    if (canvas.height - newBlock.y == gridSize * gridRow) {
-      //detect how high is the block
-      newBlock.y -= gridSize;
-      newBlock.h += gridSize; //TEST
-      // if (
-      //   newBlock.y + newBlock.h > blocks[i].y &&
-      //   newBlock.y < blocks[i].y + blocks[i].h
-      // )
-      //   blocks.splice(blocks[i]);
-    }
+    // if (canvas.height - newBlock.y == gridSize * gridRow) {
+    //   //detect how high is the block
+    //   newBlock.y -= gridSize;
+    //   newBlock.h += gridSize; //TEST
+    //   // if (
+    //   //   newBlock.y + newBlock.h > blocks[i].y &&
+    //   //   newBlock.y < blocks[i].y + blocks[i].h
+    //   // )
+    //   //   blocks.splice(blocks[i]);
+    // }
 
     newBlock.update();
   });
@@ -167,19 +168,19 @@ canvas.addEventListener("contextmenu", (e) => {
 });
 
 //GRID
-let gridSize = 10;
+let gridSize = 20;
 
 for (let i = 0; i < canvas.width; i += gridSize) {
   for (let j = 0; j < canvas.height; j += gridSize) {
     let x = i * gridSize;
     let y = j * gridSize;
-    drawPoints(i, j, "transparent");
+    drawPoints(i, j, "white");
   }
 }
 
 function drawPoints(x, y, color) {
   context.strokeStyle = color;
-  context.strokeRect(x, y, 10, 10);
+  context.strokeRect(x, y, 20, 20);
   context.fillStyle = color;
   context.fill();
 }
@@ -205,3 +206,26 @@ function random(min = 0, max = 100) {
   rand = rand + min;
   return rand;
 }
+
+//Testing Season & time
+let hemisphere = "";
+
+window.navigator.geolocation.getCurrentPosition((position) => {
+  console.log(position.coords.latitude);
+  if (position.coords.latitude > 0) {
+    hemisphere = "North";
+  } else {
+    hemisphere = "South";
+  }
+  let date = new Date();
+  let month = date.getMonth();
+  let time = date.getTime();
+  if (hemisphere == "South" && month > 1) {
+    console.log("otoño");
+  }
+  if (time > 17) {
+    console.log("es de noche");
+  } else {
+    console.log("es de dia");
+  }
+});
