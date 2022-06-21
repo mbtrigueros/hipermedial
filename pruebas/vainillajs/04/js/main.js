@@ -175,13 +175,20 @@ canvas.addEventListener("contextmenu", (e) => {
 //GRID
 let gridSize = 20;
 
-for (let i = 0; i < canvas.width; i += gridSize) {
-  for (let j = 0; j < canvas.height; j += gridSize) {
-    let x = i * gridSize;
-    let y = j * gridSize;
-    drawPoints(i, j, "white");
+//Animation Loop
+function animate() {
+  //With this function you make the loop
+  requestAnimationFrame(animate);
+  for (let i = 0; i < canvas.width; i += gridSize) {
+    for (let j = 0; j < canvas.height; j += gridSize) {
+      let x = i * gridSize;
+      let y = j * gridSize;
+      drawPoints(i, j, "white");
+    }
   }
 }
+
+animate();
 
 function drawPoints(x, y, color) {
   context.strokeStyle = color;
