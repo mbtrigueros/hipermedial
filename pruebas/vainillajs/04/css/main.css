@@ -1,25 +1,25 @@
-body{
-    font-family: 'Courier New', Courier, monospace;
-    background-color: black;
-    color: white;
+body {
+  font-family: "Courier New", Courier, monospace;
+  background-color: black;
+  color: white;
 }
 
-h1{
-    font-size: 2.5em;
-    text-transform: capitalize;
+h1 {
+  font-size: 2.5em;
+  text-transform: capitalize;
 }
 
 div {
-    margin: 100px auto;
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-canvas{
-    margin: 50px auto;
-    border: white 2px solid;
-    background-color: black;
-    cursor: pointer;
+canvas {
+  /* margin: 50px auto; */
+  /* border: white 2px solid; */
+  background-color: black;
+  cursor: pointer;
 }

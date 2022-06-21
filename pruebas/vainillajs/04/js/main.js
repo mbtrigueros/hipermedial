@@ -1,9 +1,38 @@
 // Canvas Reference: https://www.w3schools.com/graphics/canvas_reference.asp
 
+//Testing Season & time
+let hemisphere = "";
+
+window.navigator.geolocation.getCurrentPosition((position) => {
+  console.log(position.coords.latitude);
+  if (position.coords.latitude > 0) {
+    hemisphere = "North";
+  } else {
+    hemisphere = "South";
+  }
+  let date = new Date();
+  let month = date.getMonth();
+  let time = date.getTime();
+  if (hemisphere == "South" && month > 1) {
+    console.log("otoño");
+  }
+  if (time > 17) {
+    console.log("es de noche");
+  } else {
+    console.log("es de dia");
+  }
+});
+
 //Resizing the canvas
 let canvas = document.querySelector("canvas");
-canvas.width = 1000;
-canvas.height = 500;
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+window.addEventListener("resize", () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+});
 
 //Context
 let context = canvas.getContext("2d");
@@ -56,30 +85,6 @@ class Block {
     this.window();
   }
 }
-
-//Create Stars
-function stars() {
-  for (let index = 0; index < 1000; index++) {
-    let x = random(0, canvas.width);
-    let y = random(0, canvas.height);
-    let h = 1;
-    let w = 1;
-    let color = {
-      r: 255,
-      g: 255,
-      b: 255,
-      a: 1,
-    };
-    context.shadowBlur = 1;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 1;
-    context.shadowColor = "white";
-    context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-    context.fillRect(x, y, w, h);
-  }
-}
-
-//stars();
 
 //JS Events
 //Reference: https://www.w3schools.com/js/js_events.asp
@@ -206,26 +211,3 @@ function random(min = 0, max = 100) {
   rand = rand + min;
   return rand;
 }
-
-//Testing Season & time
-let hemisphere = "";
-
-window.navigator.geolocation.getCurrentPosition((position) => {
-  console.log(position.coords.latitude);
-  if (position.coords.latitude > 0) {
-    hemisphere = "North";
-  } else {
-    hemisphere = "South";
-  }
-  let date = new Date();
-  let month = date.getMonth();
-  let time = date.getTime();
-  if (hemisphere == "South" && month > 1) {
-    console.log("otoño");
-  }
-  if (time > 17) {
-    console.log("es de noche");
-  } else {
-    console.log("es de dia");
-  }
-});
