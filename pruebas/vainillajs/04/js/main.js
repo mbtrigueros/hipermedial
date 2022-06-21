@@ -116,19 +116,6 @@ canvas.addEventListener("click", (event) => {
   x = s.x;
   y = s.y;
 
-  let can;
-  let gridRow = 2;
-
-  // for (let i = 0; i < blocks.length; i++) {
-  //   if (y == canvas.height - gridSize) {
-  //     can = true;
-  //     console.log("esta en el piso");
-  //   }
-  //   if (y + h >= blocks[i].y && x == blocks[i].x) {
-  //     can = true;
-  //     console.log("no esta en el piso, pero esta arriba");
-  //   }
-  // }
   blocks.push(new Block(x, y, w, h, a));
 
   blocks.forEach((newBlock) => {
@@ -143,18 +130,6 @@ canvas.addEventListener("click", (event) => {
         blocks.pop();
       }
     }
-
-    // if (canvas.height - newBlock.y == gridSize * gridRow) {
-    //   //detect how high is the block
-    //   newBlock.y -= gridSize;
-    //   newBlock.h += gridSize; //TEST
-    //   // if (
-    //   //   newBlock.y + newBlock.h > blocks[i].y &&
-    //   //   newBlock.y < blocks[i].y + blocks[i].h
-    //   // )
-    //   //   blocks.splice(blocks[i]);
-    // }
-
     newBlock.update();
   });
 });
