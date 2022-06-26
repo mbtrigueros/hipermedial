@@ -171,30 +171,30 @@ canvas.addEventListener("contextmenu", (e) => {
 
 //GRID
 let gridSize = 20;
+let prueba = new Sprite({
+  position: {
+    x: 100,
+    y: 10,
+  },
+  img: pruebaImg,
+  frames: {
+    max: 1,
+  },
+  velocity: {
+    x: 2,
+    y: 0,
+  },
+});
+//Animation Loop
+function animate() {
+  //With this function you make the loop
+  requestAnimationFrame(animate);
 
-let x = 10;
-let y = 10;
-let w = 20;
-let h = 20;
-let dx = 0.05;
+  let direction = 1;
+  prueba.draw();
+}
 
-// let prueba = new Block(x, y, w, h, 1, dx);
-// //Animation Loop
-// function animate() {
-//   //With this function you make the loop
-//   requestAnimationFrame(animate);
-
-//   for (let i = 0; i < canvas.width; i += gridSize) {
-//     for (let j = 0; j < canvas.height; j += gridSize) {
-//       drawPoints(i, j, "white");
-//     }
-//   }
-//   //context.clearRect(0, 0, innerWidth, innerHeight);
-//   prueba.update();
-//   prueba.move();
-// }
-
-//animate();
+animate();
 
 function drawPoints(x, y, color) {
   context.strokeStyle = color;
