@@ -39,12 +39,13 @@ let context = canvas.getContext("2d");
 
 //Block Class
 class Block {
-  constructor(x, y, w, h, a) {
+  constructor(x, y, w, h, a, dx) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.a = a;
+    this.dx = dx;
     this.color = {
       r: random(100, 255), //pastel colors :)
       g: random(100, 255),
@@ -79,10 +80,17 @@ class Block {
     context.strokeRect(this.x, this.y + this.h, this.w, this.h / 2);
   }
 
+  move() {
+    if (this.x > 100 || this.x < 10) {
+      this.dx = -this.dx;
+    }
+    this.x += this.dx;
+  }
+
   update() {
-    this.drawRoof();
+    //this.drawRoof();
     this.draw();
-    this.window();
+    //this.window();
   }
 }
 
@@ -96,6 +104,9 @@ let mouse = {
 };
 
 let blocks = [];
+
+let pruebaImg = new Image();
+pruebaImg.src = "imgs/prueba-export.png";
 
 //Add On Click event
 canvas.addEventListener("click", (event) => {
@@ -116,21 +127,32 @@ canvas.addEventListener("click", (event) => {
   x = s.x;
   y = s.y;
 
-  blocks.push(new Block(x, y, w, h, a));
+  let test = new Sprite({
+    position: {
+      x: s.x,
+      y: s.y,
+    },
+    img: pruebaImg,
+    frames: {
+      max: 1,
+    },
+  });
+
+  blocks.push(test);
 
   blocks.forEach((newBlock) => {
     for (let i = 0; i < blocks.length; i++) {
       if (newBlock === blocks[i]) continue;
       if (
-        newBlock.x + newBlock.w > blocks[i].x &&
-        newBlock.x < blocks[i].x + blocks[i].w &&
-        newBlock.y + newBlock.h > blocks[i].y &&
-        newBlock.y < blocks[i].y + blocks[i].h
+        newBlock.position.x + newBlock.width > blocks[i].position.x &&
+        newBlock.position.x < blocks[i].position.x + blocks[i].width &&
+        newBlock.position.y + newBlock.height > blocks[i].position.y &&
+        newBlock.position.y < blocks[i].position.y + blocks[i].height
       ) {
         blocks.pop();
       }
     }
-    newBlock.update();
+    newBlock.draw();
   });
 });
 
@@ -139,7 +161,7 @@ canvas.addEventListener("auxclick", (e) => {
   blocks.pop();
   context.clearRect(0, 0, canvas.width, canvas.height);
   blocks.forEach((newBlock) => {
-    newBlock.update();
+    newBlock.draw();
   });
 });
 
@@ -150,20 +172,29 @@ canvas.addEventListener("contextmenu", (e) => {
 //GRID
 let gridSize = 20;
 
-//Animation Loop
-function animate() {
-  //With this function you make the loop
-  requestAnimationFrame(animate);
-  for (let i = 0; i < canvas.width; i += gridSize) {
-    for (let j = 0; j < canvas.height; j += gridSize) {
-      let x = i * gridSize;
-      let y = j * gridSize;
-      drawPoints(i, j, "white");
-    }
-  }
-}
+let x = 10;
+let y = 10;
+let w = 20;
+let h = 20;
+let dx = 0.05;
 
-animate();
+// let prueba = new Block(x, y, w, h, 1, dx);
+// //Animation Loop
+// function animate() {
+//   //With this function you make the loop
+//   requestAnimationFrame(animate);
+
+//   for (let i = 0; i < canvas.width; i += gridSize) {
+//     for (let j = 0; j < canvas.height; j += gridSize) {
+//       drawPoints(i, j, "white");
+//     }
+//   }
+//   //context.clearRect(0, 0, innerWidth, innerHeight);
+//   prueba.update();
+//   prueba.move();
+// }
+
+//animate();
 
 function drawPoints(x, y, color) {
   context.strokeStyle = color;
